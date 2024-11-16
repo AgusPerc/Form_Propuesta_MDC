@@ -155,15 +155,7 @@ def crear_pdf(nombre, telefono, servicio, tarifa, referencia):
     story.append(Spacer(1, 20))
     
     # Servicios incluidos
-    servicios_incluidos = [
-        ["✓", "Atención personalizada las 24 horas del día"],
-        ["✓", "Personal altamente capacitado y certificado"],
-        ["✓", "Protocolos estrictos de higiene y seguridad"],
-        ["✓", "Seguimiento y reportes detallados"],
-        ["✓", "Coordinación con profesionales de la salud"],
-        ["✓", "Plan de cuidados personalizado"],
-        ["✓", "Asistencia en emergencias"]
-    ]
+    servicios_incluidos = get_servicios_incluidos(servicio)
     
     tabla = Table(servicios_incluidos, colWidths=[30, 450])
     tabla.setStyle(TableStyle([
@@ -173,7 +165,7 @@ def crear_pdf(nombre, telefono, servicio, tarifa, referencia):
         ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
     ]))
     
-    story.append(Paragraph("<b>Nuestros Servicios Incluyen:</b>", styles['Normal']))
+    story.append(Paragraph("<b>Servicios Incluidos:</b>", styles['Normal']))
     story.append(Spacer(1, 10))
     story.append(tabla)
     
@@ -189,11 +181,48 @@ def crear_pdf(nombre, telefono, servicio, tarifa, referencia):
 
 def get_descripcion_servicio(servicio):
     descripciones = {
-        "Cuidador": "Asistencia diaria, cuidados básicos, acompañamiento y administración de medicamentos orales, garantizando el bienestar del paciente.",
+        "Cuidador": "Servicio básico de acompañamiento y asistencia en actividades cotidianas, brindando compañía y apoyo en tareas simples del día a día.",
         "Auxiliar de Enfermería": "Asistencia en actividades diarias, cuidados básicos y acompañamiento, brindando apoyo en las tareas cotidianas y garantizando el bienestar del paciente.",
         "Enfermero": "Atención de enfermería profesional y cuidados especializados, incluyendo administración de medicamentos, monitoreo de signos vitales y manejo de procedimientos de mayor complejidad."
     }
     return descripciones.get(servicio, "")
+
+def get_servicios_incluidos(servicio):
+    servicios_base = [
+        ["✓", "Acompañamiento personalizado"],
+        ["✓", "Asistencia en actividades básicas"],
+        ["✓", "Apoyo en la movilización"],
+        ["✓", "Supervisión general"],
+        ["✓", "Reportes diarios básicos"]
+    ]
+    
+    servicios_auxiliar = [
+        ["✓", "Atención personalizada las 24 horas del día"],
+        ["✓", "Asistencia en higiene personal"],
+        ["✓", "Apoyo en alimentación"],
+        ["✓", "Control básico de signos vitales"],
+        ["✓", "Seguimiento y reportes detallados"],
+        ["✓", "Plan de cuidados básico"],
+        ["✓", "Asistencia en emergencias"]
+    ]
+    
+    servicios_enfermero = [
+        ["✓", "Atención especializada las 24 horas del día"],
+        ["✓", "Administración de medicamentos"],
+        ["✓", "Control y monitoreo de signos vitales"],
+        ["✓", "Procedimientos de enfermería"],
+        ["✓", "Coordinación con profesionales de la salud"],
+        ["✓", "Plan de cuidados personalizado"],
+        ["✓", "Manejo de emergencias"],
+        ["✓", "Reportes clínicos detallados"]
+    ]
+    
+    if servicio == "Cuidador":
+        return servicios_base
+    elif servicio == "Auxiliar de Enfermería":
+        return servicios_auxiliar
+    else:
+        return servicios_enfermero
 
 def main():
     st.title("🏥 Generador de Propuestas de Servicios de Cuidados")
@@ -207,6 +236,7 @@ def main():
         
         with col2:
             servicios = {
+                "Cuidador": 800,
                 "Auxiliar de Enfermería": 1200,
                 "Enfermero": 1500
             }
@@ -263,15 +293,9 @@ def main():
                 </div>
                 
                 <div class="servicio-card">
-                    <h3>Nuestros Servicios Incluyen:</h3>
+                    <h3>Servicios Incluidos:</h3>
                     <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="margin: 0.5rem 0;">✓ Atención personalizada las 24 horas del día</li>
-                        <li style="margin: 0.5rem 0;">✓ Personal altamente capacitado y certificado</li>
-                        <li style="margin: 0.5rem 0;">✓ Protocolos estrictos de higiene y seguridad</li>
-                        <li style="margin: 0.5rem 0;">✓ Seguimiento y reportes detallados</li>
-                        <li style="margin: 0.5rem 0;">✓ Coordinación con profesionales de la salud</li>
-                        <li style="margin: 0.5rem 0;">✓ Plan de cuidados personalizado</li>
-                        <li style="margin: 0.5rem 0;">✓ Asistencia en emergencias</li>
+                        {' '.join([f'<li style="margin: 0.5rem 0;">✓ {servicio[1]}</li>' for servicio in get_servicios_incluidos(servicio)])}
                     </ul>
                 </div>
                 
