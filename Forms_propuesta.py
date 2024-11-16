@@ -189,6 +189,7 @@ def crear_pdf(nombre, telefono, servicio, tarifa, referencia):
 
 def get_descripcion_servicio(servicio):
     descripciones = {
+        "Cuidador": "Asistencia diaria, cuidados básicos, acompañamiento y administración de medicamentos orales, garantizando el bienestar del paciente.",
         "Auxiliar de Enfermería": "Asistencia en actividades diarias, cuidados básicos y acompañamiento, brindando apoyo en las tareas cotidianas y garantizando el bienestar del paciente.",
         "Enfermero": "Atención de enfermería profesional y cuidados especializados, incluyendo administración de medicamentos, monitoreo de signos vitales y manejo de procedimientos de mayor complejidad."
     }
